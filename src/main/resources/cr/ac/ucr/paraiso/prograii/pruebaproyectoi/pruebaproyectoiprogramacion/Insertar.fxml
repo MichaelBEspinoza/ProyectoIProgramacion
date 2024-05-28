@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="bp" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.clientController.InsertController">
+   <center>
+      <AnchorPane prefHeight="423.0" prefWidth="532.0">
+         <children>
+            <Pane layoutY="-8.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="435.0" prefWidth="532.0" style="-fx-background-color: #5FC89B;">
+               <children>
+                  <Pane prefHeight="62.0" prefWidth="532.0" style="-fx-background-color: #84F2C3;">
+                     <children>
+                        <Text layoutX="226.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insertar">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutY="387.0" prefHeight="2.0" prefWidth="532.0" style="-fx-background-color: #000000;" />
+                  <Text layoutX="14.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado:  " wrappingWidth="53.918701171875">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="68.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Conectado" wrappingWidth="91.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Button layoutX="429.0" layoutY="399.0" mnemonicParsing="false" onAction="#ConnectionOnAction" prefHeight="25.0" prefWidth="74.0" style="-fx-background-color: #339069;" text="Conexion" />
+                  <TextField fx:id="nameArea" layoutX="28.0" layoutY="103.0" />
+                  <Text layoutX="29.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="30.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contexto:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="contextArea" layoutX="32.0" layoutY="164.0" />
+                  <TextField fx:id="exampleArea" layoutX="317.0" layoutY="164.0" />
+                  <TextField fx:id="clasificationArea" layoutX="317.0" layoutY="222.0" />
+                  <Text layoutX="317.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imagen:" wrappingWidth="91.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="317.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ejemplos:" wrappingWidth="91.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="317.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clasificacion:" wrappingWidth="111.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Button layoutX="43.0" layoutY="329.0" mnemonicParsing="false" onAction="#insertOnAction" prefHeight="44.0" prefWidth="111.0" style="-fx-background-color: #339069;" text="Insertar" />
+                  <Button layoutX="336.0" layoutY="329.0" mnemonicParsing="false" onAction="#goBackOnAction" prefHeight="44.0" prefWidth="111.0" style="-fx-background-color: #339069;" text="Volver" />
+                  <Text layoutX="32.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Problema:" wrappingWidth="91.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="32.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Solucion:" wrappingWidth="91.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <TextField fx:id="solutionArea" layoutX="32.0" layoutY="222.0" />
+                  <TextField fx:id="problemArea" layoutX="32.0" layoutY="280.0" />
+                  <Text layoutX="317.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha:" wrappingWidth="91.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <DatePicker fx:id="datePicker" layoutX="321.0" layoutY="280.0" prefHeight="25.0" prefWidth="147.0" />
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
