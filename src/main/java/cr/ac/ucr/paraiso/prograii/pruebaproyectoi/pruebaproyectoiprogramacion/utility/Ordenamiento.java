@@ -1,5 +1,7 @@
-package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.ordenamiento;
+package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.utility;
 
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.ClienteXMLData;
+import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 
@@ -9,9 +11,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Ordenamiento {
+    ClienteXMLData client;
+
+    {
+        try {
+            client = new ClienteXMLData("Proyecto.xml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (JDOMException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void ordenarPatronesPorNombre() throws IOException, JDOMException {
-        List<Element> patrones = raiz.getChildren("patron");
+        List<Element> patrones = client.getRaiz().getChildren("patron");
 
         // Ordena los patrones por nombre usando un comparador (ahora lambda).
         patrones.sort((p1, p2) -> {
@@ -19,11 +32,11 @@ public class Ordenamiento {
             String nombre2 = p2.getChildText("nombre");
             return nombre1.compareToIgnoreCase(nombre2);
         });// End of lambda [sort].
-        guardar();
+        client.guardar();
     }// End of method [ordenarPatronesPorNombre].
 
     public void ordenarPatronesPorID() throws IOException, JDOMException {
-        List<Element> patrones = raiz.getChildren("patron");
+        List<Element> patrones = client.getRaiz().getChildren("patron");
 
         // Ordena los patrones por ID usando un comparador (ahora lambda).
         patrones.sort((p1, p2) -> {
@@ -31,11 +44,11 @@ public class Ordenamiento {
             String id2 = p2.getAttributeValue("idDelPatron");
             return id1.compareTo(id2);
         });// End of lambda [sort].
-        guardar();
+        client.guardar();
     }// End of method [ordenarPatronesPorID].
 
     public void ordenarPatronesPorTipo() throws IOException, JDOMException {
-        List<Element> patrones = raiz.getChildren("patron");
+        List<Element> patrones = client.getRaiz().getChildren("patron");
 
         // Ordena los patrones por tipo usando un comparador (ahora lambda).
         patrones.sort((p1, p2) -> {
@@ -43,11 +56,11 @@ public class Ordenamiento {
             String tipo2 = p2.getChildText("tipo");
             return tipo1.compareToIgnoreCase(tipo2);
         });// End of lambda [sort].
-        guardar();
+        client.guardar();
     }// End of method [ordenarPatronesPorTipo].
 
     public void ordenarPatronesPorFecha() throws IOException, JDOMException {
-        List<Element> patrones = raiz.getChildren("patron");
+        List<Element> patrones = client.getRaiz().getChildren("patron");
 
         // Ordena los patrones por fecha de agregado usando un comparador (ahora lambda).
         patrones.sort((p1, p2) -> {
@@ -56,7 +69,7 @@ public class Ordenamiento {
             LocalDate fecha2 = LocalDate.parse(p2.getChildText("fechaAgregado"), formatter);
             return fecha1.compareTo(fecha2);
         });// End of lambda [sort].
-        guardar();
+        client.guardar();
     }// End of method [ordenarPatronesPorFecha].
 
 }

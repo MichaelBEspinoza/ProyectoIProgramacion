@@ -2,7 +2,7 @@ package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.c
 
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.DesignPattern;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.PatronNoEncontradoException;
-import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.ordenamiento.Ordenamiento;
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.utility.Ordenamiento;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
@@ -22,7 +22,8 @@ public class ClienteXMLData {
     private final Element raiz;
     private final Document documento;
 
-    Ordenamiento ordenes = new Ordenamiento();
+    Ordenamiento ordenamiento = new Ordenamiento();
+
 
     public ClienteXMLData(String rutaDocumento) throws IOException, JDOMException{
         File file = new File(rutaDocumento);
@@ -83,7 +84,7 @@ public class ClienteXMLData {
         ePatron.addContent(eSolution);
 
         this.raiz.addContent(ePatron);
-        ordenes.ordenarPatronesPorNombre();
+        ordenamiento.ordenarPatronesPorNombre();
         guardar();
         return DP.toString();
     }// End of method [insertar].
@@ -207,5 +208,16 @@ public class ClienteXMLData {
         throw new PatronNoEncontradoException();
     }// End of method [buscarPorID].
 
+    public String getRutaDocumento() {
+        return rutaDocumento;
+    }
+
+    public Element getRaiz() {
+        return raiz;
+    }
+
+    public Document getDocumento() {
+        return documento;
+    }
 }// End of class [ClienteXMLData].
 
