@@ -1,5 +1,6 @@
 package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.example;
 
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.ordenamiento.Ordenamiento;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.ClienteXMLData;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.PatronNoEncontradoException;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.DesignPattern;
@@ -20,13 +21,15 @@ public class ClienteXMLDataTest {
     ClienteXMLData clienteXMLData = new ClienteXMLData("pruebas.xml");
     ClienteXMLDataTest() throws IOException, JDOMException {}
 
+    Ordenamiento ordenes = new Ordenamiento();
+
     @Test
     public void insertar_y_eliminar_funcionan() throws Exception {
 
         // Arrange.
         DesignPattern nuevoPatron = new DesignPattern();
         String id = nuevoPatron.generatePatternCode();
-        nuevoPatron = new DesignPattern(id, "Nombre", "Descripción", "Tipo", "Ejemplo", LocalDate.of(2024,5,17));
+        nuevoPatron = new DesignPattern(id, "Nombre", "Descripción", "Tipo","codeExamples", "Context", "Problem", "Solution", LocalDate.of(2024,5,17));
 
         // Act.
         clienteXMLData.insertar(nuevoPatron);
@@ -45,9 +48,11 @@ public class ClienteXMLDataTest {
     @Test
     public void insertar_ordenado() throws IOException, JDOMException {
         clienteXMLData.limpiar();
-        clienteXMLData.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Código B", LocalDate.now().minusDays(2)));
-        clienteXMLData.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Código A", LocalDate.now().minusDays(1)));
-        clienteXMLData.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Código C", LocalDate.now().minusDays(3)));
+        clienteXMLData.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Examples" ,"Código A", "Context", "Problem", LocalDate.now().minusDays(1)));
+        clienteXMLData.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Examples" ,"Código B", "Context", "Problem", LocalDate.now().minusDays(2)));
+
+        clienteXMLData.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Examples" ,"Código C", "Context", "Problem", LocalDate.now().minusDays(3)));
+
 
         List<Element> patrones = clienteXMLData.lista();
 
@@ -63,12 +68,11 @@ public class ClienteXMLDataTest {
     @Test
     void actualizar_funciona() throws IOException, PatronNoEncontradoException, JDOMException {
         // Arrange: crear un patrón inicial en el XML.
-        DesignPattern patronInicial = new DesignPattern("ABC123", "PatronInicial", "DescripcionInicial", "TipoInicial", "EjemploCodigoInicial", LocalDate.now().minusDays(1));
+        DesignPattern patronInicial = new DesignPattern("ABC123", "PatronInicial", "DescripcionInicial", "TipoInicial", "EjemploCodigoInicial", "Codigo", "Context", "Problem", LocalDate.now().minusDays(1));
         System.out.println(clienteXMLData.insertar(patronInicial));
 
         // Crear un patrón nuevo con los nuevos valores para actualizar.
-        DesignPattern nuevoPatron = new DesignPattern("ABC123", "NuevoPatron", "DescripcionNuevoPatron", "TipoNuevoPatron", "EjemploCodigoNuevoPatron", LocalDate.now());
-
+        DesignPattern nuevoPatron = new DesignPattern("ABC123", "PatronInicial", "DescripcionInicial", "TipoInicial", "EjemploCodigoInicial", "Codigo", "Context", "Problem", LocalDate.now().minusDays(2));
         // Act: actualizar el patrón existente en el XML.
         clienteXMLData.actualizar("ABC123", nuevoPatron);
         List<Element> patrones = clienteXMLData.lista();
@@ -98,12 +102,10 @@ public class ClienteXMLDataTest {
     @Test
     public void ordenar_por_criterios_funciona() throws IOException, JDOMException {
         // Arrange: Agregar algunos patrones desordenados.
-        System.out.println(clienteXMLData.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Código B", LocalDate.now().minusDays(2))));
-        System.out.println(clienteXMLData.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Código A", LocalDate.now().minusDays(1))));
-        System.out.println(clienteXMLData.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Código C", LocalDate.now().minusDays(3))));
-
-        // Act: Ordenar los patrones por nombre.
-        clienteXMLData.ordenarPatronesPorNombre();
+        System.out.println(clienteXMLData.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Example", "Código B", "Context", "Problem", LocalDate.now().minusDays(2))));
+        System.out.println(clienteXMLData.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Example", "Código A", "Context", "Problem", LocalDate.now().minusDays(1))));
+        System.out.println(clienteXMLData.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Example", "Código C", "Context", "Problem", LocalDate.now().minusDays(3))));
+        ordenes.ordenarPatronesPorNombre();
 
         // Assert: Verificar que los patrones estén ordenados correctamente por nombre.
         List<Element> patrones = clienteXMLData.lista();

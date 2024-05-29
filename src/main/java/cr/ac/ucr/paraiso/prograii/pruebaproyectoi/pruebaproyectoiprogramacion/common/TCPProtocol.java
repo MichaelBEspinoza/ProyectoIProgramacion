@@ -1,6 +1,6 @@
 package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.common;
 
-import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.Pattern;
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.DesignPattern;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.utility.Utility;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.data.PatternXmlData;
 import org.jdom2.Document;
@@ -61,9 +61,9 @@ public class TCPProtocol {
             switch (comando){
 
                 case INSERTAR_PATRON:
-                    salida = insertarOnAction(Pattern.fromXMLElement(root.getChild("pattern")));
+                    salida = insertarOnAction(DesignPattern.fromXMLElement(root.getChild("DesignPattern")));
                 case BUSCAR_PATRON:
-                    salida = String.valueOf(buscarOnAction(Pattern.fromXMLElement(root.getChild("pattern"))));
+                    salida = String.valueOf(buscarOnAction(DesignPattern.fromXMLElement(root.getChild("DesignPattern"))));
 
             }
 
@@ -78,7 +78,7 @@ public class TCPProtocol {
         return salida;
     }
 
-    private String insertarOnAction(Pattern pattern) {
+    private String insertarOnAction(DesignPattern pattern) {
 
         PatternXmlData util = new PatternXmlData();
         try {
@@ -89,12 +89,12 @@ public class TCPProtocol {
         return "Elemento insertado con exito";
     }
 
-    private StringBuilder buscarOnAction(Pattern element) throws Exception {
+    private StringBuilder buscarOnAction(DesignPattern element) throws Exception {
         PatternXmlData util = new PatternXmlData();
         StringBuilder builder = new StringBuilder();
-        Pattern patron = util.findPatternById(element.getId());
+        DesignPattern patron = util.findPatternById(element.getId());
         if(Utility.compare(element.getId(),patron.getId())==0){
-            builder.append("El patron fue encontrado\n").append("Name: " +element.getName()).append("Contexto: "+ element.getContext()).append("Problema: "+ element.getProblem()).append("Solucion: " + element.getSolution()).append("Ejemplos: "+element.getExample()).append("Clasificacion: "+ element.getClassification());
+            builder.append("El patron fue encontrado\n").append("Name: " +element.getName()).append("Contexto: "+ element.getContext()).append("Problema: "+ element.getProblem()).append("Solucion: " + element.getSolution()).append("Ejemplos: "+element.getCodeExamples()).append("Clasificacion: "+ element.getType());
             return builder;
         }else{
             builder.append("El patron no fue encontrado");

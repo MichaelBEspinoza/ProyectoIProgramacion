@@ -1,6 +1,6 @@
 package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.data;
 
-import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.Pattern;
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.DesignPattern;
 import org.jdom2.Element;
 import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
@@ -22,7 +22,7 @@ public class PatternXmlData {
 
     private static final String FILE_PATH = "patterns.xml";
 
-    public static List<Pattern> loadPatterns() throws Exception {
+    public static List<DesignPattern> loadPatterns() throws Exception {
         File xmlFile = new File(FILE_PATH);
         if (!xmlFile.exists()) {
             xmlFile.createNewFile();
@@ -35,14 +35,14 @@ public class PatternXmlData {
         Document document = saxBuilder.build(xmlFile);
         Element rootElement = document.getRootElement();
         return rootElement.getChildren("pattern").stream()
-                .map(Pattern::fromXMLElement)
+                .map(DesignPattern::fromXMLElement)
                 .collect(Collectors.toList());
     }
 
-    public static void savePatterns(List<Pattern> patterns) throws IOException {
+    public static void savePatterns(List<DesignPattern> patterns) throws IOException {
         Element rootElement = new Element("patterns");
         Document document = new Document(rootElement);
-        for (Pattern pattern : patterns) {
+        for (DesignPattern pattern : patterns) {
             rootElement.addContent(pattern.toXMLElement());
         }
         saveDocument(document);
@@ -54,22 +54,22 @@ public class PatternXmlData {
         xmlOutput.output(document, new FileWriter(FILE_PATH));
     }
 
-    public void addPattern(Pattern pattern) throws Exception {
-        List<Pattern> patterns = loadPatterns();
+    public void addPattern(DesignPattern pattern) throws Exception {
+        List<DesignPattern> patterns = loadPatterns();
         patterns.add(pattern);
         savePatterns(patterns);
     }
 
-    public Pattern findPatternById(String id) throws Exception {
-        List<Pattern> patterns = loadPatterns();
+    public DesignPattern findPatternById(String id) throws Exception {
+        List<DesignPattern> patterns = loadPatterns();
         return patterns.stream()
                 .filter(pattern -> pattern.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
 
-    public static void updatePattern(Pattern updatedPattern) throws Exception {
-        List<Pattern> patterns = loadPatterns();
+    public static void updatePattern(DesignPattern updatedPattern) throws Exception {
+        List<DesignPattern> patterns = loadPatterns();
         for (int i = 0; i < patterns.size(); i++) {
             if (patterns.get(i).getId().equals(updatedPattern.getId())) {
                 patterns.set(i, updatedPattern);
@@ -80,7 +80,7 @@ public class PatternXmlData {
     }
 
     public static void deletePattern(String id) throws Exception {
-        List<Pattern> patterns = loadPatterns();
+        List<DesignPattern> patterns = loadPatterns();
         patterns.removeIf(pattern -> pattern.getId().equals(id));
         savePatterns(patterns);
     }
