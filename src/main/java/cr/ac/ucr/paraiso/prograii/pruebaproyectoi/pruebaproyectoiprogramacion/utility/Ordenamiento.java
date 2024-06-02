@@ -1,7 +1,6 @@
 package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.utility;
 
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.ClienteXMLData;
-import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.GuardarXML;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -13,6 +12,7 @@ import java.util.List;
 
 public class Ordenamiento {
     ClienteXMLData client;
+
     {
         try {
             client = new ClienteXMLData("Proyecto.xml");
@@ -23,7 +23,6 @@ public class Ordenamiento {
         }
     }
 
-    GuardarXML guardar = new GuardarXML();
     public void ordenarPatronesPorNombre() throws IOException, JDOMException {
         List<Element> patrones = client.getRaiz().getChildren("patron");
 
