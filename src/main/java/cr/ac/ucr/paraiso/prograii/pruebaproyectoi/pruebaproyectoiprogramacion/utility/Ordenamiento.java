@@ -1,6 +1,7 @@
 package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.utility;
 
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.ClienteXMLData;
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.GuardarXML;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -23,6 +24,8 @@ public class Ordenamiento {
         }
     }
 
+    GuardarXML guardar = new GuardarXML();
+
     public void ordenarPatronesPorNombre() throws IOException, JDOMException {
         List<Element> patrones = client.getRaiz().getChildren("patron");
 
@@ -32,7 +35,7 @@ public class Ordenamiento {
             String nombre2 = p2.getChildText("nombre");
             return nombre1.compareToIgnoreCase(nombre2);
         });// End of lambda [sort].
-        client.guardar();
+        guardar.guardar(client.getRutaDocumento(),client.getDocumento());
     }// End of method [ordenarPatronesPorNombre].
 
     public void ordenarPatronesPorID() throws IOException, JDOMException {
@@ -44,7 +47,7 @@ public class Ordenamiento {
             String id2 = p2.getAttributeValue("idDelPatron");
             return id1.compareTo(id2);
         });// End of lambda [sort].
-        client.guardar();
+        guardar.guardar(client.getRutaDocumento(),client.getDocumento());
     }// End of method [ordenarPatronesPorID].
 
     public void ordenarPatronesPorTipo() throws IOException, JDOMException {
@@ -56,7 +59,7 @@ public class Ordenamiento {
             String tipo2 = p2.getChildText("tipo");
             return tipo1.compareToIgnoreCase(tipo2);
         });// End of lambda [sort].
-        client.guardar();
+        guardar.guardar(client.getRutaDocumento(),client.getDocumento());
     }// End of method [ordenarPatronesPorTipo].
 
     public void ordenarPatronesPorFecha() throws IOException, JDOMException {
@@ -69,7 +72,6 @@ public class Ordenamiento {
             LocalDate fecha2 = LocalDate.parse(p2.getChildText("fechaAgregado"), formatter);
             return fecha1.compareTo(fecha2);
         });// End of lambda [sort].
-        client.guardar();
+        guardar.guardar(client.getRutaDocumento(),client.getDocumento());
     }// End of method [ordenarPatronesPorFecha].
-
 }
