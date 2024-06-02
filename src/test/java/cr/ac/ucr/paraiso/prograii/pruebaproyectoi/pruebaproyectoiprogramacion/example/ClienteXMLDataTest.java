@@ -33,6 +33,7 @@ public class ClienteXMLDataTest {
 
     @Test
     public void insertar_y_eliminar_funcionan() throws Exception {
+
         // Arrange.
         GeneratePatternCode generatePatternCode = new GeneratePatternCode();
         String id = generatePatternCode.generatePatternCode();
