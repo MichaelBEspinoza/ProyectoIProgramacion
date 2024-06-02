@@ -33,7 +33,6 @@ public class ClienteXMLDataTest {
 
     @Test
     public void insertar_y_eliminar_funcionan() throws Exception {
-
         // Arrange.
         GeneratePatternCode generatePatternCode = new GeneratePatternCode();
         String id = generatePatternCode.generatePatternCode();
@@ -179,7 +178,7 @@ public class ClienteXMLDataTest {
         assertEquals("Tipo2", resultado.getType());
         assertEquals("Código B", resultado.getCodeExamples());
         assertEquals(LocalDate.now().minusDays(2), resultado.getFechaAgregado());
-        
+
         limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
     }// End of method [buscar_por_tipo_funciona].
 }
