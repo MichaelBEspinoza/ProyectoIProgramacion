@@ -1,7 +1,8 @@
-package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.data;
+package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.patternData;
 
 
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.DesignPattern;
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.ToXMLElement;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -10,12 +11,13 @@ import java.util.List;
 
 public class SavePatterns {
     private static final String FILE_PATH = "patterns.xml";
+    static final ToXMLElement toXMLElement = new ToXMLElement();
 
     public static void savePatterns(List<DesignPattern> patterns) throws IOException {
         Element rootElement = new Element("patterns");
         Document document = new Document(rootElement);
         for (DesignPattern pattern : patterns) {
-            rootElement.addContent(pattern.toXMLElement());
+            rootElement.addContent(toXMLElement.toXMLElement(pattern));
         }
         SaveDocument.saveDocument(document, FILE_PATH);
     }
