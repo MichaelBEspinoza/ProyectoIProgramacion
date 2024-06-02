@@ -1,5 +1,7 @@
 package cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.example;
 
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.*;
+import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.GeneratePatternCode;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.utility.Ordenamiento;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.client.ClienteXMLData;
 import cr.ac.ucr.paraiso.prograii.pruebaproyectoi.pruebaproyectoiprogramacion.domain.PatronNoEncontradoException;
@@ -19,49 +21,60 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ClienteXMLDataTest {
 
     ClienteXMLData client = new ClienteXMLData("pruebas.xml");
+    LimpiarXML limpiar = new LimpiarXML();
+    BuscarPorIDXML buscar = new BuscarPorIDXML();
+    InsertarXML insertar = new InsertarXML();
+    MostrarContenidosXML mostrar = new MostrarContenidosXML();
+
+    ListaXML lista = new ListaXML();
+    ActualizarXML actualizar = new ActualizarXML();
     ClienteXMLDataTest() throws IOException, JDOMException {}
+    ExisteXML existe = new ExisteXML();
+    EliminarXML eliminar = new EliminarXML();
 
     Ordenamiento ordenes = new Ordenamiento();
+    GeneratePatternCode generate = new GeneratePatternCode();
 
     @Test
     public void insertar_y_eliminar_funcionan() throws Exception {
 
         // Arrange.
         DesignPattern nuevoPatron = new DesignPattern();
-        String id = nuevoPatron.generatePatternCode();
+        String id = generate.generatePatternCode();
         nuevoPatron = new DesignPattern(id, "Nombre", "Descripción", "Tipo","codeExamples", "Context", "Problem", "Solution", LocalDate.of(2024,5,17));
 
         // Act.
-        client.insertar(nuevoPatron);
+        insertar.insertar(nuevoPatron,client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
 
         // Assert.
-        assert(client.existe(nuevoPatron));
+        assert(existe.existe(nuevoPatron,client.getRaiz()));
 
         // Act.
-        client.eliminar(nuevoPatron);
+        eliminar.eliminar(nuevoPatron,client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
 
         // Assert.
-        assert(!client.existe(nuevoPatron));
-        client.limpiar();
+        assert(!existe.existe(nuevoPatron,client.getRaiz()));
+        limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
     }// End of method [insertar_y_eliminar_funcionan].
 
     @Test
     public void insertar_ordenado() throws IOException, JDOMException {
-        client.limpiar();
-        client.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Examples" ,"Código A", "Context", "Problem", LocalDate.now().minusDays(1)));
-        client.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Examples" ,"Código B", "Context", "Problem", LocalDate.now().minusDays(2)));
+        limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
+        insertar.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Examples" ,"Código A", "Context", "Problem", LocalDate.now().minusDays(1)),client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
+        insertar.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Examples" ,"Código B", "Context", "Problem", LocalDate.now().minusDays(2)),client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
 
-        client.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Examples" ,"Código C", "Context", "Problem", LocalDate.now().minusDays(3)));
+        insertar.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Examples" ,"Código C", "Context", "Problem", LocalDate.now().minusDays(3)),client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
 
 
-        List<Element> patrones = client.lista();
+        List<Element> patrones = lista.lista(client.getRaiz());
 
         // Assert: Verificar que los patrones estén ordenados correctamente por nombre.
         assertEquals("Patron A", patrones.get(0).getChildText("nombre"));
         assertEquals("Patron B", patrones.get(1).getChildText("nombre"));
         assertEquals("Patron C", patrones.get(2).getChildText("nombre"));
 
-        client.limpiar();
+        limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
+
     }
 
 
@@ -69,13 +82,13 @@ public class ClienteXMLDataTest {
     void actualizar_funciona() throws IOException, PatronNoEncontradoException, JDOMException {
         // Arrange: crear un patrón inicial en el XML.
         DesignPattern patronInicial = new DesignPattern("ABC123", "PatronInicial", "DescripcionInicial", "TipoInicial", "EjemploCodigoInicial", "Codigo", "Context", "Problem", LocalDate.now().minusDays(1));
-        System.out.println(client.insertar(patronInicial));
+        System.out.println(insertar.insertar(patronInicial,client.getDocumento(),client.getRaiz(), client.getRutaDocumento()));
 
         // Crear un patrón nuevo con los nuevos valores para actualizar.
         DesignPattern nuevoPatron = new DesignPattern("ABC123", "PatronInicial", "DescripcionInicial", "TipoInicial", "EjemploCodigoInicial", "Codigo", "Context", "Problem", LocalDate.now().minusDays(2));
         // Act: actualizar el patrón existente en el XML.
-        client.actualizar("ABC123", nuevoPatron);
-        List<Element> patrones = client.lista();
+        actualizar.actualizar("ABC123", nuevoPatron,client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
+        List<Element> patrones = lista.lista(client.getRaiz());
 
         // Verificar el contenido de la lista de patrones.
         for (Element patron : patrones) {
@@ -96,57 +109,58 @@ public class ClienteXMLDataTest {
         assertNotNull(patrones.getFirst().getChildText("fechaAgregado"));
         assertEquals(nuevoPatron.getFechaAgregado().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), patrones.getFirst().getChildText("fechaAgregado"));
 
-        client.limpiar();
+        limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
     }// End of method [actualizar_funciona].
 
     @Test
     public void ordenar_por_criterios_funciona() throws IOException, JDOMException {
         // Arrange: Agregar algunos patrones desordenados.
-        System.out.println(client.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Example", "Código B", "Context", "Problem", LocalDate.now().minusDays(2))));
-        System.out.println(client.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Example", "Código A", "Context", "Problem", LocalDate.now().minusDays(1))));
-        System.out.println(client.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Example", "Código C", "Context", "Problem", LocalDate.now().minusDays(3))));
+        System.out.println( insertar.insertar(new DesignPattern("ID2", "Patron B", "Descripción B", "Tipo B", "Example", "Código B", "Context", "Problem", LocalDate.now().minusDays(2)),client.getDocumento(),client.getRaiz(), client.getRutaDocumento()));
+        System.out.println( insertar.insertar(new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Example", "Código A", "Context", "Problem", LocalDate.now().minusDays(1)),client.getDocumento(),client.getRaiz(), client.getRutaDocumento()));
+        System.out.println( insertar.insertar(new DesignPattern("ID3", "Patron C", "Descripción C", "Tipo C", "Example", "Código C", "Context", "Problem", LocalDate.now().minusDays(3)),client.getDocumento(),client.getRaiz(), client.getRutaDocumento()));
         ordenes.ordenarPatronesPorNombre();
 
         // Assert: Verificar que los patrones estén ordenados correctamente por nombre.
-        List<Element> patrones = client.lista();
+        List<Element> patrones = lista.lista(client.getRaiz());
         assertEquals("Patron A", patrones.get(0).getChildText("nombre"));
         assertEquals("Patron B", patrones.get(1).getChildText("nombre"));
         assertEquals("Patron C", patrones.get(2).getChildText("nombre"));
-        System.out.println(client.mostrarContenidos());
+        System.out.println(mostrar.mostrarContenidos(client.getRaiz()));
 
         ordenes.ordenarPatronesPorFecha();
-        System.out.println("Por fechas\n" + client.mostrarContenidos());
+        System.out.println("Por fechas\n" + mostrar.mostrarContenidos(client.getRaiz()));
 
         assertEquals("20/05/2024", patrones.get(0).getChildText("fechaAgregado"));
         assertEquals("19/05/2024", patrones.get(1).getChildText("fechaAgregado"));
         assertEquals("18/05/2024", patrones.get(2).getChildText("fechaAgregado"));
-        System.out.println(client.mostrarContenidos());
+        System.out.println(mostrar.mostrarContenidos(client.getRaiz()));
 
 
         ordenes.ordenarPatronesPorTipo();
         assertEquals("Tipo A", patrones.get(0).getChildText("tipo"));
         assertEquals("Tipo B", patrones.get(1).getChildText("tipo"));
         assertEquals("Tipo C", patrones.get(2).getChildText("tipo"));
-        System.out.println(client.mostrarContenidos());
+        System.out.println(mostrar.mostrarContenidos(client.getRaiz()));
 
         ordenes.ordenarPatronesPorID();
         assertEquals("ID1", patrones.get(0).getAttributeValue("idDelPatron"));
         assertEquals("ID2", patrones.get(1).getAttributeValue("idDelPatron"));
         assertEquals("ID3", patrones.get(2).getAttributeValue("idDelPatron"));
-        System.out.println(client.mostrarContenidos());
+        System.out.println(mostrar.mostrarContenidos(client.getRaiz()));
 
 
-        client.limpiar();
+        limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
+
     }// End of method [ordenar_por_criterios_funciona].
 
     @Test
     void mostrar_contenidos_funciona() throws IOException, JDOMException, ParserConfigurationException, SAXException {
         DesignPattern patron1 = new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Examples" ,"Código A", "Context", "Problem", LocalDate.now().minusDays(1));
         DesignPattern patron2 = new DesignPattern("ID2", "Patron B", "Descripcion B", "Tipo B", "Examples", "Codigo B", "Context", "Problem", LocalDate.now().minusDays(2));
-        System.out.println(client.insertar(patron1));
-        System.out.println(client.insertar(patron2));
-        System.out.println(client.mostrarContenidos());
-        client.limpiar();
+        System.out.println( insertar.insertar(patron1,client.getDocumento(),client.getRaiz(), client.getRutaDocumento()));
+        System.out.println( insertar.insertar(patron2,client.getDocumento(),client.getRaiz(), client.getRutaDocumento()));
+        System.out.println(mostrar.mostrarContenidos(client.getRaiz()));
+        limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
     }// End of method [mostrar_contenidos_funciona].
 
     @Test
@@ -155,12 +169,12 @@ public class ClienteXMLDataTest {
         DesignPattern dp1 = new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Examples" ,"Código A", "Context", "Problem", LocalDate.now().minusDays(1));
         DesignPattern dp2 = new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Examples" ,"Código A", "Context", "Problem", LocalDate.now().minusDays(2));
         DesignPattern dp3 = new DesignPattern("ID1", "Patron A", "Descripción A", "Tipo A", "Examples" ,"Código A", "Context", "Problem", LocalDate.now().minusDays(3));
-        client.insertar(dp1);
-        client.insertar(dp2);
-        client.insertar(dp3);
+        insertar.insertar(dp1,client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
+        insertar.insertar(dp2,client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
+        insertar.insertar(dp3,client.getDocumento(),client.getRaiz(), client.getRutaDocumento());
 
         // Act: Busca por el nombre.
-        DesignPattern resultado = client.buscarPorID("ID2");
+        DesignPattern resultado = buscar.buscarPorID("ID2",client.getRaiz());
 
         // Assert: Verifica que se encontró el patrón correcto.
         assertNotNull(resultado);
@@ -171,7 +185,8 @@ public class ClienteXMLDataTest {
         assertEquals("Código B", resultado.getCodeExamples());
         assertEquals(LocalDate.now().minusDays(2), resultado.getFechaAgregado());
 
-        client.limpiar();
+
+        limpiar.limpiar(client.getDocumento(), client.getRaiz(), client.getRutaDocumento());
     }// End of method [buscar_por_tipo_funciona].
 
 
