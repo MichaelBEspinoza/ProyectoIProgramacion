@@ -219,5 +219,6 @@ public class ClienteXMLData {
     public Document getDocumento() {
         return documento;
     }
+
 }// End of class [ClienteXMLData].
 

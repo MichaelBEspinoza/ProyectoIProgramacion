@@ -114,49 +114,6 @@ public class DesignPattern {
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-    // Métodos de utilidad.
-    // Método para generar el código del patrón aleatoriamente.
-    public String generatePatternCode() {
-        // Define los caracteres que pueden estar en el código.
-        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder code = new StringBuilder();
-        Random rnd = new Random();
-        // Genera un código de longitud 6.
-        for (int i = 0; i < 6; i++) code.append(caracteres.charAt(rnd.nextInt(caracteres.length())));
-
-        return code.toString();
-    }// End of method [generatePatternCode].
-
-    public Element toXMLElement() {
-        Element patternElement = new Element("pattern");
-        patternElement.setAttribute("id", id);
-        patternElement.addContent(new Element("name").setText(name));
-        patternElement.addContent(new Element("description"));
-        patternElement.addContent(new Element("type").setText(type));
-        patternElement.addContent(new Element("example").setText(codeExamples));
-        patternElement.addContent(new Element("localDate").setText(String.valueOf(fechaAgregado)));
-        patternElement.addContent(new Element("context").setText(context));
-        patternElement.addContent(new Element("problem").setText(problem));
-        patternElement.addContent(new Element("solution").setText(solution));
-
-       ;
-
-        return patternElement;
-    }
-
-    public static DesignPattern fromXMLElement(Element element) {
-        String id = element.getAttributeValue("id");
-        String name = element.getChildText("name");
-        String description = element.getChildText("description");
-        String type= element.getChildText("type");
-        String example = element.getChildText("example");
-        LocalDate date = LocalDate.parse(element.getChildText("localDate"));
-        String context = element.getChildText("context");
-        String problem = element.getChildText("problem");
-        String solution = element.getChildText("solution");
-
-        return new DesignPattern(id, name, description, type, example, context, problem, solution, date);
-    }
 
     @Override
     public String toString() {
